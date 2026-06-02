@@ -14,7 +14,7 @@ Sibling plugins to mirror in style and tone: `../crumb/`, `../fetch-meditation-w
 minutes.php                Main plugin file — singleton BMLT_Minutes class, all logic lives here
 uninstall.php              Removes options + deletes all bmlt_minutes posts when the plugin is deleted
 index.php                  Empty silence file
-css/minutes.css            Frontend list styles (used by [minutes] shortcode)
+css/minutes.css            Frontend list styles (used by [bmlt_minutes] shortcode)
 js/admin.js                wp.media file-picker wiring for the Minutes Document meta box
 assets/                    WordPress.org banner + icon + screenshots (gitattribute: export-ignore)
 readme.txt                 WordPress.org readme (Markdown-ish, dot-org-flavored)
@@ -93,13 +93,13 @@ Three integration points:
 
 The shortcode list intentionally still **shows** locked entries (titled, dated, padlocked) so members know which meetings exist; only the document URL itself is gated.
 
-For protecting the **entire page** that hosts `[minutes]`, the plugin deliberately ships nothing — WordPress's native Visibility → Password protected on the containing page already does it, so there's no reason to reinvent it. If a future change reintroduces a shortcode-level gate, do it via a Settings-stored password (never a literal in the shortcode attribute, which leaks into page source and caches).
+For protecting the **entire page** that hosts `[bmlt_minutes]`, the plugin deliberately ships nothing — WordPress's native Visibility → Password protected on the containing page already does it, so there's no reason to reinvent it. If a future change reintroduces a shortcode-level gate, do it via a Settings-stored password (never a literal in the shortcode attribute, which leaks into page source and caches).
 
 ### Options
 
 | Option key | Used for |
 |---|---|
-| `bmlt_minutes_sort_order` | Default `[minutes]` sort (`desc` / `asc`) |
+| `bmlt_minutes_sort_order` | Default `[bmlt_minutes]` sort (`desc` / `asc`) |
 | `bmlt_minutes_max_upload_mb` | Per-file upload cap in MB. Default 10. Clamped to `wp_max_upload_size()` on save. |
 
 If you add a new option, also add it to the `$minutes_options` array in `uninstall.php`.
@@ -116,7 +116,7 @@ All three are scoped via `is_minutes_upload_context()` — uploads outside the M
 
 ### Shortcode
 
-`[minutes]` — primary public-facing surface. Attributes: `committee`, `year`, `limit`, `order`, `group_by`, `show_excerpt`. Renders into `.bmlt-minutes` with dashicon-prefixed file links. Style hook: `.bmlt-minutes__*` BEM-ish classes. Locked entries get the `.bmlt-minutes__item--locked` modifier and a `.bmlt-minutes__type--locked` "Protected" badge.
+`[bmlt_minutes]` — primary public-facing surface. Attributes: `committee`, `year`, `limit`, `order`, `group_by`, `show_excerpt`. Renders into `.bmlt-minutes` with dashicon-prefixed file links. Style hook: `.bmlt-minutes__*` BEM-ish classes. Locked entries get the `.bmlt-minutes__item--locked` modifier and a `.bmlt-minutes__type--locked` "Protected" badge.
 
 The singular `bmlt_minutes` permalink is also public — used as the unlock surface for password-protected items, and as a fallback link target when neither attachment nor URL is set.
 
@@ -142,7 +142,7 @@ Type → dashicon mapping lives in `dashicon_for_type()`. To add a new file type
 - Don't add a `wp_remote_get()` call without caching via transient — see how `crumb.php` does `COUNTS_CACHE_TTL`.
 - Don't hand-roll HTML escaping with `htmlspecialchars` — use the WordPress `esc_*` family.
 - Don't introduce composer runtime dependencies. Dev-only is fine.
-- Don't break the `[minutes]` shortcode API without bumping a major version in `BMLT_MINUTES_VERSION` and `readme.txt`'s Stable tag.
+- Don't break the `[bmlt_minutes]` shortcode API without bumping a major version in `BMLT_MINUTES_VERSION` and `readme.txt`'s Stable tag.
 - Don't add a new menu page without `current_user_can( 'manage_options' )` or stricter.
 
 ## Local Development
@@ -160,7 +160,7 @@ PHPUnit runs against the WordPress test suite via the `wp-phpunit/wp-phpunit` co
 
 - `tests/bootstrap.php` loads wp-phpunit, then manually `require`s `minutes.php` and calls `BMLT_Minutes::activate()` so the CPT/taxonomy/default committees exist for every test run.
 - `tests/wp-tests-config.php` is environment-driven — DB credentials come from `DB_HOST` / `DB_USER` / `DB_PASS` / `DB_NAME` (defaults: `localhost` / `root` / `root` / `wordpress_test`).
-- `tests/test-minutes.php` covers registration, sanitizers, `resolve_document()` precedence, the `[minutes]` shortcode (incl. locked-post URL hiding), the `the_content` single-view filter, and the `apply_password_field` nonce-gated post_password write.
+- `tests/test-minutes.php` covers registration, sanitizers, `resolve_document()` precedence, the `[bmlt_minutes]` shortcode (incl. locked-post URL hiding), the `the_content` single-view filter, and the `apply_password_field` nonce-gated post_password write.
 
 Local one-shot:
 
@@ -191,5 +191,5 @@ Release notes are auto-extracted from the matching `= X.Y.Z =` block in `readme.
 1. `make dev`
 2. wp-admin → Plugins → activate BMLT Minutes
 3. Minutes → Add New → set title, meeting date, upload a PDF or paste a Google Doc URL, assign a committee, optionally set a password
-4. Create a page with `[minutes]` and view it — verify protected entries show a padlock, route to the singular permalink, and only reveal the doc after the password is entered
+4. Create a page with `[bmlt_minutes]` and view it — verify protected entries show a padlock, route to the singular permalink, and only reveal the doc after the password is entered
 5. Verify Settings → Maximum Upload Size enforces correctly by attempting to upload a file over the cap

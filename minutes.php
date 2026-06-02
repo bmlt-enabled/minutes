@@ -3,7 +3,7 @@
  * Plugin Name: BMLT Minutes
  * Plugin URI: https://wordpress.org/plugins/bmlt-minutes/
  * Description: Publish NA service committee meeting minutes (PDF, DOCX, XLSX, Google Doc links) with a simple shortcode.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: bmltenabled
  * Author URI: https://bmlt.app
  * License: GPL v2 or later
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BMLT_MINUTES_VERSION', '1.0.2' );
+define( 'BMLT_MINUTES_VERSION', '1.0.3' );
 define( 'BMLT_MINUTES_FILE', __FILE__ );
 define( 'BMLT_MINUTES_URL', plugin_dir_url( __FILE__ ) );
 define( 'BMLT_MINUTES_PATH', plugin_dir_path( __FILE__ ) );
@@ -112,7 +112,7 @@ class BMLT_Minutes {
 		add_filter( 'manage_edit-' . self::CPT . '_sortable_columns', [ static::class, 'admin_sortable_columns' ] );
 		add_action( 'pre_get_posts', [ static::class, 'admin_orderby_meeting_date' ] );
 
-		add_shortcode( 'minutes', [ static::class, 'render_shortcode' ] );
+		add_shortcode( 'bmlt_minutes', [ static::class, 'render_shortcode' ] );
 
 		add_filter( 'upload_size_limit', [ static::class, 'cap_upload_size' ] );
 		add_filter( 'wp_handle_upload_prefilter', [ static::class, 'reject_oversize_upload' ] );
@@ -828,7 +828,7 @@ class BMLT_Minutes {
 				'show_excerpt' => 'false',
 			],
 			is_array( $atts ) ? $atts : [],
-			'bmlt-minutes'
+			'bmlt_minutes'
 		);
 
 		wp_enqueue_style( 'bmlt-minutes' );
@@ -1053,7 +1053,7 @@ class BMLT_Minutes {
 								<option value="desc" <?php selected( $sort_order, 'desc' ); ?>><?php esc_html_e( 'Newest first', 'bmlt-minutes' ); ?></option>
 								<option value="asc" <?php selected( $sort_order, 'asc' ); ?>><?php esc_html_e( 'Oldest first', 'bmlt-minutes' ); ?></option>
 							</select>
-							<p class="description"><?php esc_html_e( 'Used by the [minutes] shortcode when no order attribute is provided.', 'bmlt-minutes' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Used by the [bmlt_minutes] shortcode when no order attribute is provided.', 'bmlt-minutes' ); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -1086,13 +1086,13 @@ class BMLT_Minutes {
 
 			<h2><?php esc_html_e( 'Shortcode Usage', 'bmlt-minutes' ); ?></h2>
 			<p><?php esc_html_e( 'Show all minutes, grouped by committee:', 'bmlt-minutes' ); ?></p>
-			<code>[minutes]</code>
+			<code>[bmlt_minutes]</code>
 
 			<p><?php esc_html_e( 'Only one committee, latest first, year heading:', 'bmlt-minutes' ); ?></p>
-			<code>[minutes committee="area-service-committee" group_by="year"]</code>
+			<code>[bmlt_minutes committee="area-service-committee" group_by="year"]</code>
 
 			<p><?php esc_html_e( 'Limit + show excerpt:', 'bmlt-minutes' ); ?></p>
-			<code>[minutes limit="10" group_by="none" show_excerpt="true"]</code>
+			<code>[bmlt_minutes limit="10" group_by="none" show_excerpt="true"]</code>
 
 			<h3><?php esc_html_e( 'Attributes', 'bmlt-minutes' ); ?></h3>
 			<ul style="list-style:disc;padding-left:20px;">

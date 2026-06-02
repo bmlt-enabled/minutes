@@ -5,7 +5,7 @@ Tags: meeting minutes, pdf, documents, agenda, bmlt
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ Features:
 * **Committee** taxonomy seeded with common service-committee defaults (Area, Regional, Hospitals & Institutions, Public Relations, Activities, Outreach, Literature, Policy) — fully editable
 * Meeting-date field separate from publish-date, with sorting and year-grouping
 * Supports PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, TXT, RTF, CSV, plus arbitrary URLs (Google Docs, Dropbox, OneDrive)
-* Single `[minutes]` shortcode with grouping, filtering, and limiting
+* Single `[bmlt_minutes]` shortcode with grouping, filtering, and limiting
 * Optional **password protection** per post — for minutes that still contain unredacted personal details
 * Dedicated **Minutes Manager** role — grant trusted servants access to manage minutes only, without broader site access
 * Configurable per-file upload size limit (default 10 MB, scoped to the Minutes editor only)
@@ -32,15 +32,15 @@ Features:
 
 Add the shortcode to any page or post:
 
-`[minutes]`
+`[bmlt_minutes]`
 
 Filter to one committee, group by year:
 
-`[minutes committee="hospitals-institutions" group_by="year"]`
+`[bmlt_minutes committee="hospitals-institutions" group_by="year"]`
 
 Show the 10 most recent, flat list with excerpts:
 
-`[minutes limit="10" group_by="none" show_excerpt="true"]`
+`[bmlt_minutes limit="10" group_by="none" show_excerpt="true"]`
 
 Shortcode attributes:
 
@@ -57,7 +57,7 @@ Shortcode attributes:
 2. Activate the plugin through the Plugins screen in WordPress.
 3. (Optional) Open **Minutes → Settings** to set your default sort order and upload size cap.
 4. Add minutes under **Minutes → Add New** — upload a file or paste a Google Doc / external link, choose a committee, set the meeting date, publish.
-5. Add `[minutes]` to any page or post.
+5. Add `[bmlt_minutes]` to any page or post.
 
 == Frequently Asked Questions ==
 
@@ -79,11 +79,11 @@ In the **Minutes Document** meta box on the editor screen, leave the file field 
 
 = Can I password-protect minutes that contain personal details? =
 
-Yes. Some service bodies redact PII before posting, others share unredacted minutes with members only. On the editor screen, set a value in the **Password Protection** field of the Minutes Document meta box (or use WordPress's built-in Visibility → Password protected option in the Publish panel). On the public `[minutes]` list, protected entries show a padlock and link to a password-prompt page rather than exposing the document URL. Members enter the shared password once per browser to unlock the document. Default behavior with no password set is fully public access.
+Yes. Some service bodies redact PII before posting, others share unredacted minutes with members only. On the editor screen, set a value in the **Password Protection** field of the Minutes Document meta box (or use WordPress's built-in Visibility → Password protected option in the Publish panel). On the public `[bmlt_minutes]` list, protected entries show a padlock and link to a password-prompt page rather than exposing the document URL. Members enter the shared password once per browser to unlock the document. Default behavior with no password set is fully public access.
 
-= Can I password-protect the entire page that contains [minutes]? =
+= Can I password-protect the entire page that contains [bmlt_minutes]? =
 
-Yes — use WordPress's built-in page password. Edit the page that holds your `[minutes]` shortcode, open the Publish (Block Editor: Status & visibility) panel, set **Visibility → Password protected**, and enter a password. Visitors will see WordPress's standard password form before the whole page (including the minutes list) is rendered. This is independent of the per-post password on individual minutes — you can combine them if you want a members-only landing page plus an extra lock on specific minutes.
+Yes — use WordPress's built-in page password. Edit the page that holds your `[bmlt_minutes]` shortcode, open the Publish (Block Editor: Status & visibility) panel, set **Visibility → Password protected**, and enter a password. Visitors will see WordPress's standard password form before the whole page (including the minutes list) is rendered. This is independent of the per-post password on individual minutes — you can combine them if you want a members-only landing page plus an extra lock on specific minutes.
 
 = How do I let someone manage minutes without giving them full site access? =
 
@@ -100,10 +100,13 @@ Yes. The `uninstall.php` script removes the plugin's settings and deletes all mi
 
 == Screenshots ==
 
-1. Frontend `[minutes]` shortcode output, grouped by committee. The padlock and "Protected" badge indicate a password-protected entry.
+1. Frontend `[bmlt_minutes]` shortcode output, grouped by committee. The padlock and "Protected" badge indicate a password-protected entry.
 2. Admin **Meeting Minutes** list view, with columns for Meeting Date, File / Link, Author, and Committees.
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+The shortcode has been renamed from [minutes] to [bmlt_minutes] for a unique prefix. Update any pages using [minutes].
 
 = 1.0.1 =
 Fixes the Default Sort Order setting and ensures minutes without a meeting date still appear in the [minutes] list.
@@ -112,6 +115,9 @@ Fixes the Default Sort Order setting and ensures minutes without a meeting date 
 Initial release.
 
 == Changelog ==
+
+= 1.0.3 =
+* Renamed the `[minutes]` shortcode to `[bmlt_minutes]` so the tag carries a plugin-specific prefix and won't collide with other plugins.
 
 = 1.0.2 =
 * Removed the unused BMLT Server URL and Service Body ID settings.

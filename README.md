@@ -13,14 +13,14 @@
 ## Usage
 
 ```
-[minutes]
+[bmlt_minutes]
 ```
 
 Filter, limit, or change the grouping per-page:
 
 ```
-[minutes committee="hospitals-institutions" group_by="year"]
-[minutes limit="10" group_by="none" show_excerpt="true"]
+[bmlt_minutes committee="hospitals-institutions" group_by="year"]
+[bmlt_minutes limit="10" group_by="none" show_excerpt="true"]
 ```
 
 ## Installation
@@ -28,7 +28,7 @@ Filter, limit, or change the grouping per-page:
 1. Upload to `/wp-content/plugins/bmlt-minutes/`
 2. Activate in WordPress admin
 3. Add minutes under **Minutes → Add New** — upload a file or paste a Google Doc URL, choose a committee, set the meeting date
-4. Add `[minutes]` to any page or post
+4. Add `[bmlt_minutes]` to any page or post
 
 ## Settings
 
@@ -36,7 +36,7 @@ Configured under **Minutes → Settings**.
 
 | Setting              | Description                                                                  |
 |----------------------|------------------------------------------------------------------------------|
-| Default Sort Order   | `desc` (newest first) or `asc`. Applies when `[minutes]` has no `order` attr. |
+| Default Sort Order   | `desc` (newest first) or `asc`. Applies when `[bmlt_minutes]` has no `order` attr. |
 | Maximum Upload Size  | Per-file cap (MB) applied to uploads on the Minutes editor. Default 10 MB. Clamped to the server limit on save. |
 
 ## Shortcode Attributes
@@ -54,8 +54,8 @@ Configured under **Minutes → Settings**.
 
 Some service bodies redact personal details from minutes before posting, others share unredacted minutes with members only. Each minutes post can be optionally locked:
 
-- **Per-post**: set a value in the **Password Protection** field of the Minutes Document meta box (or use WordPress's native Publish → Visibility → Password protected). Locked entries show a padlock in the `[minutes]` list and require the password before the document URL is revealed.
-- **Whole-page**: set a password on the page that contains `[minutes]` via the same Visibility control — WordPress's standard password form gates the entire page.
+- **Per-post**: set a value in the **Password Protection** field of the Minutes Document meta box (or use WordPress's native Publish → Visibility → Password protected). Locked entries show a padlock in the `[bmlt_minutes]` list and require the password before the document URL is revealed.
+- **Whole-page**: set a password on the page that contains `[bmlt_minutes]` via the same Visibility control — WordPress's standard password form gates the entire page.
 
 Default behavior with no password is fully public access.
 
