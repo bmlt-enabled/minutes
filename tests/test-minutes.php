@@ -73,7 +73,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 	}
 
 	public function test_minutes_shortcode_is_registered(): void {
-		$this->assertTrue( shortcode_exists( 'minutes' ) );
+		$this->assertTrue( shortcode_exists( 'bmlt_minutes' ) );
 	}
 
 	public function test_seed_committees_creates_defaults_when_empty(): void {
@@ -229,7 +229,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_render_shortcode_empty_state(): void {
-		$html = do_shortcode( '[minutes]' );
+		$html = do_shortcode( '[bmlt_minutes]' );
 		$this->assertStringContainsString( 'bmlt-minutes--empty', $html );
 		$this->assertStringContainsString( 'No minutes published yet.', $html );
 	}
@@ -241,7 +241,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		);
 		update_post_meta( $post_id, BMLT_Minutes::META_URL, 'https://example.org/may.pdf' );
 
-		$html = do_shortcode( '[minutes group_by="none"]' );
+		$html = do_shortcode( '[bmlt_minutes group_by="none"]' );
 
 		$this->assertStringContainsString( 'May 2026 ASC Minutes', $html );
 		$this->assertStringContainsString( 'https://example.org/may.pdf', $html );
@@ -252,7 +252,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		$this->make_minutes( [ 'post_title' => 'Old Minutes' ], '2024-03-01' );
 		$this->make_minutes( [ 'post_title' => 'Newer Minutes' ], '2026-03-01' );
 
-		$html = do_shortcode( '[minutes year="2026" group_by="none"]' );
+		$html = do_shortcode( '[bmlt_minutes year="2026" group_by="none"]' );
 
 		$this->assertStringContainsString( 'Newer Minutes', $html );
 		$this->assertStringNotContainsString( 'Old Minutes', $html );
@@ -262,7 +262,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		$this->make_minutes( [ 'post_title' => 'Dated Minutes' ], '2026-05-01' );
 		$this->make_minutes( [ 'post_title' => 'Undated Minutes' ], '' );
 
-		$html = do_shortcode( '[minutes group_by="none"]' );
+		$html = do_shortcode( '[bmlt_minutes group_by="none"]' );
 
 		$this->assertStringContainsString( 'Dated Minutes', $html );
 		$this->assertStringContainsString( 'Undated Minutes', $html );
@@ -273,7 +273,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		$this->make_minutes( [ 'post_title' => 'December Minutes' ], '2026-12-01' );
 
 		update_option( 'bmlt_minutes_sort_order', 'asc' );
-		$asc = do_shortcode( '[minutes group_by="none"]' );
+		$asc = do_shortcode( '[bmlt_minutes group_by="none"]' );
 		$this->assertLessThan(
 			strpos( $asc, 'December Minutes' ),
 			strpos( $asc, 'January Minutes' ),
@@ -281,7 +281,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		);
 
 		update_option( 'bmlt_minutes_sort_order', 'desc' );
-		$desc = do_shortcode( '[minutes group_by="none"]' );
+		$desc = do_shortcode( '[bmlt_minutes group_by="none"]' );
 		$this->assertLessThan(
 			strpos( $desc, 'January Minutes' ),
 			strpos( $desc, 'December Minutes' ),
@@ -301,7 +301,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		$post_b = $this->make_minutes( [ 'post_title' => 'In Committee B' ], '2026-05-02' );
 		wp_set_object_terms( $post_b, [ $term_b['term_id'] ], BMLT_Minutes::TAX_COMMITTEE );
 
-		$html = do_shortcode( '[minutes committee="test-committee-a" group_by="none"]' );
+		$html = do_shortcode( '[bmlt_minutes committee="test-committee-a" group_by="none"]' );
 
 		$this->assertStringContainsString( 'In Committee A', $html );
 		$this->assertStringNotContainsString( 'In Committee B', $html );
@@ -317,7 +317,7 @@ class Test_BMLT_Minutes extends WP_UnitTestCase {
 		);
 		update_post_meta( $post_id, BMLT_Minutes::META_URL, 'https://example.org/private.pdf' );
 
-		$html = do_shortcode( '[minutes group_by="none"]' );
+		$html = do_shortcode( '[bmlt_minutes group_by="none"]' );
 
 		$this->assertStringContainsString( 'Members Only Minutes', $html );
 		$this->assertStringContainsString( 'bmlt-minutes__item--locked', $html );
